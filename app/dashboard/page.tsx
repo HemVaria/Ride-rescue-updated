@@ -8,11 +8,9 @@ import { Car, AlertTriangle, MapPin, Clock, Phone, Settings, Plus, Target, Home,
 import Link from "next/link"
 import { useAuth } from "@/hooks/useAuth"
 import { useGoogleMaps } from "@/hooks/useGoogleMaps"
-import { EnhancedLocationPicker } from "@/components/EnhancedLocationPicker"
-import { GoogleMapView } from "@/components/GoogleMapView"
-import { LocationBasedServices } from "@/components/LocationBasedServices"
+import dynamic from "next/dynamic"
 import { supabase } from "@/lib/supabase"
-import { NavBar } from "@/components/ui/tubelight-navbar"
+import { useRouter } from "next/navigation"
 
 const navItems = [
   { name: "Home", url: "/", icon: Home },
@@ -20,6 +18,10 @@ const navItems = [
   { name: "Dashboard", url: "/dashboard", icon: Car },
   { name: "Contact", url: "/contact", icon: Phone },
 ]
+
+const GoogleMapView = dynamic(() => import("@/components/GoogleMapView").then(mod => mod.GoogleMapView), { ssr: false })
+const EnhancedLocationPicker = dynamic(() => import("@/components/EnhancedLocationPicker").then(mod => mod.EnhancedLocationPicker), { ssr: false })
+const LocationBasedServices = dynamic(() => import("@/components/LocationBasedServices").then(mod => mod.LocationBasedServices), { ssr: false })
 
 export default function DashboardPage() {
   const { user, loading: authLoading, signOut } = useAuth()
@@ -30,6 +32,7 @@ export default function DashboardPage() {
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null)
   const [nearbyProviders, setNearbyProviders] = useState<any[]>([])
   const [showNearbyServices, setShowNearbyServices] = useState(false)
+  const router = useRouter()
 
   // Get user's display name
   const getUserDisplayName = () => {
@@ -143,7 +146,7 @@ export default function DashboardPage() {
       .single()
 
     if (!error && data) {
-      window.location.href = `/emergency/${data.id}`
+      router.push(`/emergency/${data.id}`)
     }
   }
 
@@ -158,16 +161,13 @@ export default function DashboardPage() {
   }
 
   if (!user) {
-    window.location.href = "/"
+    router.push("/")
     return null
   }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Navigation */}
-      <NavBar items={navItems} />
-
-      <div className="px-6 py-8 pt-20">
+      <div className="px-6 py-8 pt-32">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Welcome Section with User Name */}
           <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 shadow-xl">

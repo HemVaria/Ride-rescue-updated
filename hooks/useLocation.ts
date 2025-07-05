@@ -8,6 +8,14 @@ interface Location {
   address: string
   accuracy?: number
   timestamp?: number
+  addressComponents?: {
+    streetNumber?: string
+    streetName?: string
+    city?: string
+    state?: string
+    postalCode?: string
+    country?: string
+  }
 }
 
 interface LocationError {

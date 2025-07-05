@@ -284,7 +284,9 @@ export function LocationDisplay({
                   size="sm"
                   onClick={() => {
                     const url = `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
-                    window.open(url, "_blank")
+                    if (typeof window !== "undefined") {
+                      window.open(url, "_blank")
+                    }
                   }}
                   className="border-gray-600 text-gray-300 bg-transparent"
                 >

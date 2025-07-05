@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -29,6 +29,12 @@ export function LocationBasedServices({ userLocation, selectedService, onMechani
   const [showMap, setShowMap] = useState(false)
   const [selectedMechanic, setSelectedMechanic] = useState<any>(null)
   const [showLocationDialog, setShowLocationDialog] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(6)
+
+  // Reset visibleCount when filters/search change
+  useEffect(() => {
+    setVisibleCount(6)
+  }, [searchTerm, selectedArea, selectedServiceFilter])
 
   // Calculate distance between two points using Haversine formula
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -97,14 +103,14 @@ export function LocationBasedServices({ userLocation, selectedService, onMechani
             area.latitude,
             area.longitude,
           )
-          return { ...area, distance }
+          return { ...area, distance } as typeof area & { distance: number }
         }
         return area
       })
       .sort((a, b) => {
         // Sort by distance if available, otherwise by name
-        if (a.distance !== undefined && b.distance !== undefined) {
-          return a.distance - b.distance
+        if ((a as any).distance !== undefined && (b as any).distance !== undefined) {
+          return (a as any).distance - (b as any).distance
         }
         return a.name.localeCompare(b.name)
       })
@@ -180,19 +186,22 @@ export function LocationBasedServices({ userLocation, selectedService, onMechani
 
   const handleCallMechanic = (phone: string) => {
     if (typeof window !== "undefined") {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-
-      if (isMobile) {
-        window.location.href = `tel:${phone}`
-      } else {
-        navigator.clipboard
-          .writeText(phone)
-          .then(() => {
-            alert(`Phone number ${phone} copied to clipboard!`)
-          })
-          .catch(() => {
-            alert(`Contact: ${phone}`)
-          })
+      if (typeof navigator !== "undefined") {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        if (isMobile) {
+          window.location.href = `tel:${phone}`
+        } else if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(phone)
+            .then(() => {
+              alert(`Phone number ${phone} copied to clipboard!`)
+            })
+            .catch(() => {
+              alert(`Contact: ${phone}`)
+            })
+        } else {
+          alert(`Contact: ${phone}`)
+        }
       }
     }
   }
@@ -370,102 +379,115 @@ export function LocationBasedServices({ userLocation, selectedService, onMechani
         </div>
 
         {Array.isArray(filteredAreas) && filteredAreas.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredAreas.map((area) => (
-              <Card
-                key={area.id}
-                className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 hover:bg-slate-800/80 transition-all duration-200 shadow-xl"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg text-slate-100">{area.name}</CardTitle>
-                      {area.distance && (
-                        <p className="text-sm text-emerald-400 font-medium">{area.distance.toFixed(1)} km away</p>
-                      )}
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredAreas.slice(0, visibleCount).map((area) => (
+                <Card
+                  key={area.id}
+                  className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 hover:bg-slate-800/80 transition-all duration-200 shadow-xl"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg text-slate-100">{area.name}</CardTitle>
+                        {(area as any).distance && (
+                          <p className="text-sm text-emerald-400 font-medium">{(area as any).distance.toFixed(1)} km away</p>
+                        )}
+                      </div>
+                      <Badge variant="secondary" className="text-xs bg-slate-700/50 text-slate-300">
+                        {area.mechanics && Array.isArray(area.mechanics) ? area.mechanics.length : 0} mechanics
+                      </Badge>
                     </div>
-                    <Badge variant="secondary" className="text-xs bg-slate-700/50 text-slate-300">
-                      {area.mechanics && Array.isArray(area.mechanics) ? area.mechanics.length : 0} mechanics
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {area.mechanics &&
-                    Array.isArray(area.mechanics) &&
-                    area.mechanics.slice(0, 2).map((mechanic: any, index: number) => (
-                      <div key={index} className="border border-slate-700/50 rounded-lg p-3 bg-slate-800/30">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h4 className="font-medium text-slate-100">{mechanic.name}</h4>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <div className="flex items-center">
-                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                <span className="text-sm text-slate-300 ml-1">{mechanic.rating}/5</span>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {area.mechanics &&
+                      Array.isArray(area.mechanics) &&
+                      area.mechanics.slice(0, 2).map((mechanic: any, index: number) => (
+                        <div key={index} className="border border-slate-700/50 rounded-lg p-3 bg-slate-800/30">
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <h4 className="font-medium text-slate-100">{mechanic.name}</h4>
+                              <div className="flex items-center space-x-2 mt-1">
+                                <div className="flex items-center">
+                                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                  <span className="text-sm text-slate-300 ml-1">{mechanic.rating}/5</span>
+                                </div>
+                                {mechanic.verified && (
+                                  <Badge variant="outline" className="text-xs text-emerald-400 border-emerald-400">
+                                    Verified
+                                  </Badge>
+                                )}
                               </div>
-                              {mechanic.verified && (
-                                <Badge variant="outline" className="text-xs text-emerald-400 border-emerald-400">
-                                  Verified
-                                </Badge>
-                              )}
                             </div>
                           </div>
-                        </div>
 
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {mechanic.services &&
-                            Array.isArray(mechanic.services) &&
-                            mechanic.services.slice(0, 3).map((service: string, serviceIndex: number) => (
-                              <Badge
-                                key={serviceIndex}
-                                variant="secondary"
-                                className="text-xs bg-emerald-500/20 text-emerald-400"
-                              >
-                                {service}
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {mechanic.services &&
+                              Array.isArray(mechanic.services) &&
+                              mechanic.services.slice(0, 3).map((service: string, serviceIndex: number) => (
+                                <Badge
+                                  key={serviceIndex}
+                                  variant="secondary"
+                                  className="text-xs bg-emerald-500/20 text-emerald-400"
+                                >
+                                  {service}
+                                </Badge>
+                              ))}
+                            {mechanic.services && Array.isArray(mechanic.services) && mechanic.services.length > 3 && (
+                              <Badge variant="secondary" className="text-xs bg-slate-600/50 text-slate-300">
+                                +{mechanic.services.length - 3} more
                               </Badge>
-                            ))}
-                          {mechanic.services && Array.isArray(mechanic.services) && mechanic.services.length > 3 && (
-                            <Badge variant="secondary" className="text-xs bg-slate-600/50 text-slate-300">
-                              +{mechanic.services.length - 3} more
-                            </Badge>
-                          )}
-                        </div>
+                            )}
+                          </div>
 
-                        <div className="flex space-x-2">
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
-                            onClick={() => handleCallMechanic(mechanic.phone)}
-                          >
-                            <Phone className="w-3 h-3 mr-1" />
-                            Call
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex-1 border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
-                            onClick={() => handleMechanicSelect(mechanic, area)}
-                          >
-                            <Navigation className="w-3 h-3 mr-1" />
-                            Select
-                          </Button>
+                          <div className="flex space-x-2">
+                            <Button
+                              size="sm"
+                              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                              onClick={() => handleCallMechanic(mechanic.phone)}
+                            >
+                              <Phone className="w-3 h-3 mr-1" />
+                              Call
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
+                              onClick={() => handleMechanicSelect(mechanic, area)}
+                            >
+                              <Navigation className="w-3 h-3 mr-1" />
+                              Select
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
-                  {area.mechanics && Array.isArray(area.mechanics) && area.mechanics.length > 2 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full text-emerald-400 hover:text-emerald-300 hover:bg-slate-800/50"
-                      onClick={() => onMechanicSelect && onMechanicSelect(area)}
-                    >
-                      View {area.mechanics.length - 2} more mechanics
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    {area.mechanics && Array.isArray(area.mechanics) && area.mechanics.length > 2 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-emerald-400 hover:text-emerald-300 hover:bg-slate-800/50"
+                        onClick={() => onMechanicSelect && onMechanicSelect(area)}
+                      >
+                        View {area.mechanics.length - 2} more mechanics
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            {visibleCount < filteredAreas.length && (
+              <div className="flex justify-center mt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setVisibleCount((c) => c + 6)}
+                  className="text-emerald-400 border-emerald-400 hover:bg-slate-800/50"
+                >
+                  View More
+                </Button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-8">
             <MapPin className="w-12 h-12 text-slate-400 mx-auto mb-4" />

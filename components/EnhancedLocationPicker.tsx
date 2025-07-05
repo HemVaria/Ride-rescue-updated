@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { MapPin, Navigation, Check, AlertCircle, Clock, Map, Target, Search } from "lucide-react"
 import { useGoogleMaps } from "@/hooks/useGoogleMaps"
 import { GooglePlacesAutocomplete } from "./GooglePlacesAutocomplete"
-import { GoogleMapView } from "./GoogleMapView"
+import dynamic from "next/dynamic"
+const GoogleMapView = dynamic(() => import("./GoogleMapView").then(mod => mod.GoogleMapView), { ssr: false })
 
 interface EnhancedLocationPickerProps {
   onLocationConfirm: (location: { latitude: number; longitude: number; address: string }) => void
@@ -331,7 +332,9 @@ export function EnhancedLocationPicker({
                   size="sm"
                   onClick={() => {
                     const url = `https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}`
-                    window.open(url, "_blank")
+                    if (typeof window !== "undefined") {
+                      window.open(url, "_blank")
+                    }
                   }}
                   className="border-gray-600 text-gray-300 bg-transparent hover:bg-gray-700"
                 >

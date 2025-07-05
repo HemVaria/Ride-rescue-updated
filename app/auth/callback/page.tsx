@@ -18,7 +18,10 @@ export default function AuthCallback() {
 
       try {
         // Get the hash fragment from the URL
-        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        let hashParams = new URLSearchParams()
+        if (typeof window !== "undefined") {
+          hashParams = new URLSearchParams(window.location.hash.substring(1))
+        }
         const accessToken = hashParams.get("access_token")
         const refreshToken = hashParams.get("refresh_token")
         const type = hashParams.get("type")

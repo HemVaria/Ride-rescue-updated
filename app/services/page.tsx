@@ -19,12 +19,13 @@ import {
   Navigation,
   Clock,
 } from "lucide-react"
-import { LocationBasedServices } from "@/components/LocationBasedServices"
-import { useLocation } from "@/hooks/useLocation"
-import { NavBar } from "@/components/ui/tubelight-navbar"
 import { Tilt } from "@/components/ui/tilt"
 import { Spotlight } from "@/components/ui/spotlight"
-import { LeafletMap } from "@/components/ui/leaflet-map"
+import dynamic from "next/dynamic"
+import { useRouter } from "next/navigation"
+
+const LeafletMap = dynamic(() => import("@/components/ui/leaflet-map").then(mod => mod.LeafletMap), { ssr: false })
+const LocationBasedServices = dynamic(() => import("@/components/LocationBasedServices").then(mod => mod.LocationBasedServices), { ssr: false })
 
 const emergencyServices = [
   {
@@ -174,15 +175,16 @@ export default function ServicesPage() {
   const [selectedService, setSelectedService] = useState<string>("")
   const [showMap, setShowMap] = useState(false)
   const [selectedLocation, setSelectedLocation] = useState<any>(null)
-  const { location, loading: locationLoading } = useLocation()
+  const router = useRouter()
 
   const handleServiceSelect = (serviceTitle: string) => {
     setSelectedService(serviceTitle)
-    // Scroll to location services section
     setTimeout(() => {
-      const element = document.getElementById("location-services")
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
+      if (typeof window !== "undefined") {
+        const element = document.getElementById("location-services")
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" })
+        }
       }
     }, 100)
   }
@@ -200,9 +202,6 @@ export default function ServicesPage() {
           .then(() => {
             alert(`Emergency number ${phone} copied to clipboard!`)
           })
-          .catch(() => {
-            alert(`Emergency Contact: ${phone}`)
-          })
       }
     }
   }
@@ -217,15 +216,14 @@ export default function ServicesPage() {
   const handleNavigateToLocation = (location: any) => {
     const { lat, lng } = location.position
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
-    window.open(url, "_blank")
+    if (typeof window !== "undefined") {
+      window.open(url, "_blank")
+    }
   }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Navigation */}
-      <NavBar items={navItems} />
-
-      <div className="container mx-auto px-4 py-8 space-y-8 pt-20">
+      <div className="container mx-auto px-4 py-8 space-y-8 pt-32">
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -472,7 +470,6 @@ export default function ServicesPage() {
         {/* Location-Based Services */}
         <div id="location-services" className="space-y-6">
           <LocationBasedServices
-            userLocation={location}
             selectedService={selectedService}
             onMechanicSelect={(mechanic) => {
               console.log("Selected mechanic:", mechanic)

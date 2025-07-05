@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Phone, Mail, MapPin, Clock, Car, Wrench, Home, MessageSquare } from "lucide-react"
-import { NavBar } from "@/components/ui/tubelight-navbar"
 
 const navItems = [
   { name: "Home", url: "/", icon: Home },
@@ -42,9 +41,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      {/* Navigation */}
-      <NavBar items={navItems} />
-
       <div className="container mx-auto px-4 py-8 space-y-8 pt-20">
         {/* Header */}
         <div className="text-center space-y-4">
@@ -72,7 +68,7 @@ export default function ContactPage() {
               <div className="flex items-center space-x-4">
                 <Badge className="bg-red-500/20 text-red-400 border border-red-500/30">24/7 Available</Badge>
                 <Button
-                  onClick={() => window.open("tel:+918200487838", "_self")}
+                  onClick={() => { if (typeof window !== "undefined") window.open("tel:+918200487838", "_self") }}
                   className="bg-red-600 hover:bg-red-700 text-white"
                 >
                   <Phone className="w-4 h-4 mr-2" />

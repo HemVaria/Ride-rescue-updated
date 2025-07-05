@@ -15,20 +15,15 @@ let googleMapsPromise: Promise<void> | null = null
  * was injected by `GoogleMapsScript` (server component).
  */
 export const loadGoogleMaps = (apiKey?: string): Promise<void> => {
-  // Already loaded
   if (isGoogleMapsLoaded) return Promise.resolve()
-
-  // Already loading somewhere else
   if (googleMapsPromise) return googleMapsPromise
-
-  // If the global object is there we’re done
   if (typeof window !== "undefined" && window.google && window.google.maps) {
     isGoogleMapsLoaded = true
     return Promise.resolve()
   }
-
-  // No script tag yet and no apiKey provided → we just wait for a tag that
-  // another part of the app might inject (e.g. GoogleMapsScript in <head />)
+  if (typeof window === "undefined") {
+    return Promise.reject(new Error("Google Maps can only be loaded on the client"))
+  }
   if (!apiKey) {
     googleMapsPromise = new Promise((resolve) => {
       const poll = setInterval(() => {
@@ -41,8 +36,6 @@ export const loadGoogleMaps = (apiKey?: string): Promise<void> => {
     })
     return googleMapsPromise
   }
-
-  // Inject a script tag ourselves when an apiKey is provided
   googleMapsPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script")
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry`
@@ -61,7 +54,6 @@ export const loadGoogleMaps = (apiKey?: string): Promise<void> => {
     document.head.appendChild(script)
     isGoogleMapsLoading = true
   })
-
   return googleMapsPromise
 }
 
@@ -73,7 +65,7 @@ export class GoogleMapsGeocoder {
   private geocoder: any
 
   constructor() {
-    if (isGoogleMapsAvailable()) {
+    if (typeof window !== "undefined" && isGoogleMapsAvailable()) {
       this.geocoder = new window.google.maps.Geocoder()
     }
   }
@@ -165,7 +157,7 @@ export class GooglePlacesService {
   private sessionToken: any
 
   constructor() {
-    if (isGoogleMapsAvailable()) {
+    if (typeof window !== "undefined" && isGoogleMapsAvailable()) {
       this.service = new window.google.maps.places.AutocompleteService()
       this.sessionToken = new window.google.maps.places.AutocompleteSessionToken()
     }
@@ -201,7 +193,7 @@ export class GoogleMapsDirectionsService {
   private service: any
 
   constructor() {
-    if (isGoogleMapsAvailable()) {
+    if (typeof window !== "undefined" && isGoogleMapsAvailable()) {
       this.service = new window.google.maps.DirectionsService()
     }
   }
@@ -215,7 +207,7 @@ export class GoogleMapsDirectionsService {
       const request = {
         origin,
         destination,
-        travelMode: window.google.maps.TravelMode.DRIVING,
+        travelMode: typeof window !== "undefined" ? window.google.maps.TravelMode.DRIVING : undefined,
         ...options,
       }
 

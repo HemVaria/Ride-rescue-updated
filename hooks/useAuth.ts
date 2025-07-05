@@ -124,7 +124,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             full_name: metadata?.full_name || "",
             phone: metadata?.phone || "",
           },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : "",
         },
       })
 
@@ -158,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const resetPassword = async (email: string) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: typeof window !== "undefined" ? `${window.location.origin}/auth/reset-password` : "",
       })
 
       if (error) {
@@ -180,7 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         type: "signup",
         email: email.trim().toLowerCase(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : "",
         },
       })
 
@@ -207,5 +207,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     resendConfirmation,
   }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={ value }> { children } </AuthContext.Provider>
 }

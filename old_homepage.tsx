@@ -7,13 +7,13 @@ import { Car, Wrench, Fuel, Truck, Battery, Key, Settings, ArrowRight, Home, Pho
 import Link from "next/link"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useAuth } from "@/hooks/useAuth"
-import { FloatingNav } from "@/components/ui/floating-navbar"
+import { NavBar } from "@/components/ui/tubelight-navbar"
 
 const navItems = [
-  { name: "Home", link: "/", icon: <Home /> },
-  { name: "Services", link: "/services", icon: <Wrench /> },
-  { name: "Dashboard", link: "/dashboard", icon: <Car /> },
-  { name: "Contact", link: "/contact", icon: <Phone /> },
+  { name: "Home", url: "/", icon: Home },
+  { name: "Services", url: "/services", icon: Wrench },
+  { name: "Dashboard", url: "/dashboard", icon: Car },
+  { name: "Contact", url: "/contact", icon: Phone },
 ]
 
 export default function LandingPage() {
@@ -83,7 +83,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Navigation */}
-      <FloatingNav navItems={navItems} />
+      <NavBar items={navItems} />
 
       {/* Hero Section with 3D Scene */}
       <section className="relative min-h-screen flex items-center overflow-hidden">

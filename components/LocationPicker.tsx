@@ -103,7 +103,9 @@ export function LocationPicker({
   const openInMaps = () => {
     if (selectedLocation) {
       const url = `https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}`
-      window.open(url, "_blank")
+      if (typeof window !== "undefined") {
+        window.open(url, "_blank")
+      }
     }
   }
 

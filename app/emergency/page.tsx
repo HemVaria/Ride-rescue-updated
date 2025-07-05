@@ -6,20 +6,21 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, MapPin, Clock, Phone } from "lucide-react"
 import Link from "next/link"
 import LocationDisplay from "@/components/LocationDisplay" // Added LocationDisplay import
-import MapView from "@/components/MapView" // Added MapView import
+import dynamic from "next/dynamic"
+const MapView = dynamic(() => import("@/components/MapView").then(mod => mod.default), { ssr: false })
 
 export default function EmergencyPage() {
   const [helpRequested, setHelpRequested] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const [progress, setProgress] = useState(0)
   const [currentLocation, setCurrentLocation] = useState("Detecting your location...")
-  const [location, setLocation] = useState(null) // Added location state
+  const [location, setLocation] = useState<{ latitude: number; longitude: number; address: string } | null>(null)
 
   useEffect(() => {
     // Simulate location detection
     setTimeout(() => {
       setCurrentLocation("123 Main St, Downtown, City")
-      setLocation({ latitude: 34.0522, longitude: -118.2437 }) // Example coordinates
+      setLocation({ latitude: 34.0522, longitude: -118.2437, address: "123 Main St, Downtown, City" }) // Example coordinates
     }, 2000)
   }, [])
 
@@ -112,18 +113,24 @@ export default function EmergencyPage() {
           </div>
 
           {/* Location Display */}
-          <LocationDisplay
-            onLocationConfirm={(confirmedLocation) => {
-              // Handle location confirmation for emergency request
-              console.log("Location confirmed:", confirmedLocation)
-            }}
-            showConfirmButton={true}
-            showEditButton={true}
-            showMapButton={true}
-          />
+          {location && location.latitude && location.longitude && (
+            <LocationDisplay
+              address={currentLocation}
+              coordinates={{ lat: location.latitude, lng: location.longitude }}
+              onLocationConfirm={(confirmedLocation) => {
+                // Handle location confirmation for emergency request
+                console.log("Location confirmed:", confirmedLocation)
+              }}
+              showConfirmButton={true}
+              showEditButton={true}
+              showMapButton={true}
+            />
+          )}
 
           {/* Map View */}
-          {location && <MapView location={location} height="250px" showControls={true} />}
+          {location && location.latitude && location.longitude && (
+            <MapView location={location} height="250px" showControls={true} center={{ lat: location.latitude, lng: location.longitude }} />
+          )}
 
           {/* Emergency Contacts Notification */}
           <Card className="bg-blue-500/10 border-blue-500/20">
@@ -172,18 +179,24 @@ export default function EmergencyPage() {
       {/* Main Content */}
       <div className="p-6 space-y-8">
         {/* Location Display */}
-        <LocationDisplay
-          onLocationConfirm={(confirmedLocation) => {
-            // Handle location confirmation for emergency request
-            console.log("Location confirmed:", confirmedLocation)
-          }}
-          showConfirmButton={true}
-          showEditButton={true}
-          showMapButton={true}
-        />
+        {location && location.latitude && location.longitude && (
+          <LocationDisplay
+            address={currentLocation}
+            coordinates={{ lat: location.latitude, lng: location.longitude }}
+            onLocationConfirm={(confirmedLocation) => {
+              // Handle location confirmation for emergency request
+              console.log("Location confirmed:", confirmedLocation)
+            }}
+            showConfirmButton={true}
+            showEditButton={true}
+            showMapButton={true}
+          />
+        )}
 
         {/* Map View */}
-        {location && <MapView location={location} height="250px" showControls={true} />}
+        {location && location.latitude && location.longitude && (
+          <MapView location={location} height="250px" showControls={true} center={{ lat: location.latitude, lng: location.longitude }} />
+        )}
 
         {/* Emergency Instructions */}
         <div className="text-center space-y-4">

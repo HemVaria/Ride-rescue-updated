@@ -202,7 +202,9 @@ export function MapView({
   const openInGoogleMaps = () => {
     if (location) {
       const url = `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
-      window.open(url, "_blank")
+      if (typeof window !== "undefined") {
+        window.open(url, "_blank")
+      }
     }
   }
 
@@ -213,8 +215,10 @@ export function MapView({
     setTimeout(() => {
       if (mapRef.current && location) {
         // Re-initialize map
-        const event = new Event("resize")
-        window.dispatchEvent(event)
+        if (typeof window !== "undefined") {
+          const event = new Event("resize")
+          window.dispatchEvent(event)
+        }
       }
     }, 100)
   }
@@ -268,7 +272,9 @@ export function MapView({
           markers={providers.map((provider) => ({
             id: provider.id,
             position: { lat: provider.latitude, lng: provider.longitude },
-            tooltip: `${provider.name} (${provider.eta})`,
+            title: provider.name,
+            info: `ETA: ${provider.eta}, Rating: ${provider.rating}`,
+            type: "provider",
           }))}
         />
         {mapError ? (
