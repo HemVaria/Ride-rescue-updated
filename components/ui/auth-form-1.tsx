@@ -69,6 +69,19 @@ function Auth({ className, onClose, ...props }: React.ComponentProps<"div"> & { 
   return (
     <div data-slot="auth" className={cn("mx-auto w-full max-w-md", className)} {...props}>
       <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl">
+        {/* Close button */}
+        {onClose && (
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={onClose}
+            className="absolute right-4 top-4 z-20 text-white/70 hover:text-white hover:bg-white/10 rounded-full p-2 transition"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent" />
         <div className="relative z-10">
           <AnimatePresence mode="wait">
