@@ -1,4 +1,4 @@
-Got it, Hem! Here's a **professional and formal README** for your **Ride Rescue** project — no Gen Z slang, no mention of v0.dev, just clean and deploy-ready for resumes, GitHub, or investor showcases:
+
 
 ---
 
