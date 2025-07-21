@@ -13,6 +13,7 @@ interface AuthContextType {
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>
   resendConfirmation: (email: string) => Promise<{ error: AuthError | null }>
+  signInWithGoogle: () => Promise<{ error: AuthError | null; data?: any }>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -45,6 +46,10 @@ export function useAuth() {
       },
       resendConfirmation: async (email: string) => {
         console.log("Mock resend confirmation:", email)
+        return { error: null }
+      },
+      signInWithGoogle: async () => {
+        console.log("Mock Google sign in")
         return { error: null }
       },
     }
@@ -197,6 +202,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : undefined,
+        },
+      })
+
+      if (error) {
+        console.error("Google sign in error:", error)
+      } else {
+        console.log("Google sign in initiated")
+      }
+
+      return { error, data }
+    } catch (error) {
+      console.error("Unexpected Google sign in error:", error)
+      return { error: error as AuthError }
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -205,9 +232,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
     resetPassword,
     resendConfirmation,
+    signInWithGoogle,
   }
 
-  return (
-    <AuthContext.Provider value={value} > {children} </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

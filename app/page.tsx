@@ -87,15 +87,15 @@ export default function LandingPage() {
 
       {/* Hero Section with 3D Scene */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* 3D Spline Scene Container */}
+        {/* 3D Robot Scene Container */}
         <div className="absolute inset-0 w-full h-full">
           <iframe
-            src="https://my.spline.design/r4xbot-bU8f6yOjKpatnOQjy5I7fYj2/"
+            src="https://my.spline.design/nexbotrobotcharacterconcept-JcYjIhcCzXpePMeyzabYMvRB/"
             frameBorder="0"
             width="100%"
             height="100%"
             className="w-full h-full"
-            title="Interactive 3D Robotic Scene"
+            title="Interactive 3D Robot Scene"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
