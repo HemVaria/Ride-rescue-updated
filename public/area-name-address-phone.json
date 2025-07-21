@@ -1,0 +1,296 @@
+[
+    {
+        "Area": "Tandalja",
+        "Name": "Mechanic Service",
+        "Address": "Shivangi Soc, Opp Shree Nidhi Residency Vasna Jakat Naka, Tandalja, Vadodara - 390012",
+        "Phone": "+918044566850"
+    },
+    {
+        "Area": "Harish Nagar",
+        "Name": "Mahesh Apartments",
+        "Address": "G-1, Bahucharaji Road Near Sandesh Press, Harish Nagar, Karelibagh, Vadodara - 390001",
+        "Phone": "+918047844001"
+    },
+    {
+        "Area": "Atladara",
+        "Name": "Atladara Mechanic",
+        "Address": "Atladra, Vadodara - 390012",
+        "Phone": "+918045169674"
+    },
+    {
+        "Area": "Gorwa",
+        "Name": "Gorwa Mechanic",
+        "Address": "Near Bhailal Amin General Hospital, Gorwa Road, Gorwa, Vadodara - 390016",
+        "Phone": "+917942646604"
+    },
+    {
+        "Area": "Haripura",
+        "Name": "Silver Square Appt. Mechanic",
+        "Address": "Shop No - 9-10, Silver Square Appt. 64, Shrinagar Society, Dinesh Mill Road, Haripura, Vadodara - 390020",
+        "Phone": "+918041017867"
+    },
+    {
+        "Area": "Sama Gam",
+        "Name": "All Car Service",
+        "Address": "Near Urmi School, Vadodara - 390024",
+        "Phone": "+918047792746"
+    },
+    {
+        "Area": "Bhayli",
+        "Name": "Land Craft Apartment Mechanic",
+        "Address": "Gf 07, Land Craft Apartment, Opp Banco Company, near Bhayli station, Vadodara - 391410",
+        "Phone": "+918044456738"
+    },
+    {
+        "Area": "Gorwa",
+        "Name": "Kamdhenu Estate Mechanic",
+        "Address": "1-1 Opp Satyanarayan Estate Kamdhenu Estate Gorwa Vadodara, Vadodara - 390016",
+        "Phone": "+918044457236"
+    },
+    {
+        "Area": "Subhanpura",
+        "Name": "Vallabhpark Shopping Center Mechanic",
+        "Address": "D-44, Vallabhpark Shopping Center, Atmajoyti Ashram Road, Subhanpura, Vadodara - 390023",
+        "Phone": "+918044464594"
+    },
+    {
+        "Area": "Chhani",
+        "Name": "Ami Motors",
+        "Address": "Plot No 07, Arun Ind Estate, PVR Cinema Opp Matru Chhaya, Chhani, Vadodara - 390002",
+        "Phone": "+918044016581"
+    },
+    {
+        "Area": "Pratap Nagar",
+        "Name": "Patel Estate Mechanic",
+        "Address": "No. 13, D-1, Patel Estate, Pratap Nagar, Vadodara - 390004",
+        "Phone": "+918044013924"
+    },
+    {
+        "Area": "Karelibaug",
+        "Name": "Khaswadi Samsan Road Mechanic",
+        "Address": "Near Khaswadi Samsan Road, Karelibaug, Vadodara - 390018",
+        "Phone": "+918044566454"
+    },
+    {
+        "Area": "Manjalpur",
+        "Name": "Sagar Auto Garage",
+        "Address": "Shop No 3, Shreeji Complex, Near Manjalpur Crossing, Manjalpur, Vadodara - 390011",
+        "Phone": "+919824523450"
+    },
+    {
+        "Area": "Makarpura",
+        "Name": "Shreeji Auto Garage",
+        "Address": "12, GIDC, Opposite Makarpura Bus Depot, Makarpura, Vadodara - 390010",
+        "Phone": "+919824512345"
+    },
+    {
+        "Area": "Akota",
+        "Name": "Akota Auto Works",
+        "Address": "Shop No 5, Akota Stadium Road, Akota, Vadodara - 390020",
+        "Phone": "+919825678901"
+    },
+    {
+        "Area": "Fatehgunj",
+        "Name": "Fatehgunj Auto Garage",
+        "Address": "Near Fatehgunj Circle, Fatehgunj, Vadodara - 390002",
+        "Phone": "+919825679012"
+    },
+    {
+        "Area": "Nizampura",
+        "Name": "Nizampura Auto Care",
+        "Address": "Shop No 8, Near Nizampura Bus Stop, Nizampura, Vadodara - 390002",
+        "Phone": "+919825680123"
+    },
+    {
+        "Area": "Alkapuri",
+        "Name": "Alkapuri Car Care",
+        "Address": "GF-2, Race Course Tower, Alkapuri, Vadodara - 390007",
+        "Phone": "+919825681234"
+    },
+    {
+        "Area": "Ajwa Road",
+        "Name": "Ajwa Road Auto Garage",
+        "Address": "Shop No 4, Near Ajwa Road Circle, Ajwa Road, Vadodara - 390019",
+        "Phone": "+919825682345"
+    },
+    {
+        "Area": "Gotri",
+        "Name": "Gotri Auto Garage",
+        "Address": "Shop No 6, Gotri Road, Gotri, Vadodara - 390021",
+        "Phone": "+919825683456"
+    },
+    {
+        "Area": "Vasna Road",
+        "Name": "Vasna Road Auto Care",
+        "Address": "Shop No 2, Vasna Road, Vasna, Vadodara - 390015",
+        "Phone": "+919825684567"
+    },
+    {
+        "Area": "Waghodia Road",
+        "Name": "Waghodia Road Auto Garage",
+        "Address": "Shop No 9, Waghodia Road, Vadodara - 390019",
+        "Phone": "+919825685678"
+    },
+    {
+        "Area": "Old Padra Rd",
+        "Name": "Padra Road Auto Garage",
+        "Address": "Shop No 11, Old Padra Road, Vadodara - 390020",
+        "Phone": "+919825686789"
+    },
+    {
+        "Area": "Sayajigunj",
+        "Name": "Sayajigunj Auto Care",
+        "Address": "Shop No 15, Sayajigunj, Vadodara - 390020",
+        "Phone": "+919825687890"
+    },
+    {
+        "Area": "Dandia Bazar",
+        "Name": "Dandia Bazar Auto Garage",
+        "Address": "Shop No 10, Dandia Bazar, Vadodara - 390001",
+        "Phone": "+919825688901"
+    },
+    {
+        "Area": "Mandvi",
+        "Name": "Mandvi Auto Garage",
+        "Address": "Shop No 7, Mandvi, Vadodara - 390001",
+        "Phone": "+919825689012"
+    },
+    {
+        "Area": "Raopura",
+        "Name": "Raopura Auto Garage",
+        "Address": "Shop No 3, Raopura, Vadodara - 390001",
+        "Phone": "+919825690123"
+    },
+    {
+        "Area": "Jetalpur",
+        "Name": "Jetalpur Road Auto Garage",
+        "Address": "Shop No 5, Jetalpur Road, Vadodara - 390007",
+        "Phone": "+919825691234"
+    },
+    {
+        "Area": "Akshar Chowk",
+        "Name": "Akshar Chowk Auto Garage",
+        "Address": "Shop No 8, Akshar Chowk, Vadodara - 390020",
+        "Phone": "+919825692345"
+    },
+    {
+        "Area": "Chhani Jakat",
+        "Name": "Chhani Jakat Naka Auto Garage",
+        "Address": "Shop No 12, Chhani Jakat Naka, Vadodara - 390002",
+        "Phone": "+919825693456"
+    },
+    {
+        "Area": "Kalali",
+        "Name": "Kalali Auto Garage",
+        "Address": "Shop No 14, Kalali, Vadodara - 390012",
+        "Phone": "+919825694567"
+    },
+    {
+        "Area": "Gorwa",
+        "Name": "Om Auto Garage",
+        "Address": "Shop No 16, Gorwa, Vadodara - 390016",
+        "Phone": "+919825695678"
+    },
+    {
+        "Area": "Bhayli",
+        "Name": "Bhayli Auto Garage",
+        "Address": "Shop No 18, Bhayli, Vadodara - 391410",
+        "Phone": "+919825696789"
+    },
+    {
+        "Area": "Makarpura",
+        "Name": "Makarpura GIDC Auto Garage",
+        "Address": "Shop No 20, Makarpura GIDC, Vadodara - 390010",
+        "Phone": "+919825697890"
+    },
+    {
+        "Area": "Manjalpur",
+        "Name": "Manjalpur Auto Garage",
+        "Address": "Shop No 22, Manjalpur, Vadodara - 390011",
+        "Phone": "+919825698901"
+    },
+    {
+        "Area": "Karelibaug",
+        "Name": "Karelibaug Auto Garage",
+        "Address": "Shop No 24, Karelibaug, Vadodara - 390018",
+        "Phone": "+919825699012"
+    },
+    {
+        "Area": "Subhanpura",
+        "Name": "Subhanpura Auto Garage",
+        "Address": "Shop No 26, Subhanpura, Vadodara - 390023",
+        "Phone": "+919825700123"
+    },
+    {
+        "Area": "Atladara",
+        "Name": "Atladara Auto Garage",
+        "Address": "Shop No 28, Atladara, Vadodara - 390012",
+        "Phone": "+919825701234"
+    },
+    {
+        "Area": "Gotri",
+        "Name": "Gotri Road Auto Garage",
+        "Address": "Shop No 30, Gotri Road, Vadodara - 390021",
+        "Phone": "+919825702345"
+    },
+    {
+        "Area": "Alkapuri",
+        "Name": "Alkapuri Auto Garage",
+        "Address": "Shop No 32, Alkapuri, Vadodara - 390007",
+        "Phone": "+919825703456"
+    },
+    {
+        "Area": "Fatehgunj",
+        "Name": "Fatehgunj Road Auto Garage",
+        "Address": "Shop No 34, Fatehgunj Road, Vadodara - 390002",
+        "Phone": "+919825704567"
+    },
+    {
+        "Area": "Nizampura",
+        "Name": "Nizampura Road Auto Garage",
+        "Address": "Shop No 36, Nizampura Road, Vadodara - 390002",
+        "Phone": "+919825705678"
+    },
+    {
+        "Area": "Ajwa Road",
+        "Name": "Ajwa Road Car Care",
+        "Address": "Shop No 38, Ajwa Road, Vadodara - 390019",
+        "Phone": "+919825706789"
+    },
+    {
+        "Area": "Vasna Road",
+        "Name": "Vasna Road Car Care",
+        "Address": "Shop No 40, Vasna Road, Vadodara - 390015",
+        "Phone": "+919825707890"
+    },
+    {
+        "Area": "Waghodia Road",
+        "Name": "Waghodia Road Car Care",
+        "Address": "Shop No 42, Waghodia Road, Vadodara - 390019",
+        "Phone": "+919825708901"
+    },
+    {
+        "Area": "Old Padra Rd",
+        "Name": "Old Padra Road Car Care",
+        "Address": "Shop No 44, Old Padra Road, Vadodara - 390020",
+        "Phone": "+919825709012"
+    },
+    {
+        "Area": "Sayajigunj",
+        "Name": "Sayajigunj Car Care",
+        "Address": "Shop No 46, Sayajigunj, Vadodara - 390020",
+        "Phone": "+919825710123"
+    },
+    {
+        "Area": "Dandia Bazar",
+        "Name": "Dandia Bazar Car Care",
+        "Address": "Shop No 48, Dandia Bazar, Vadodara - 390001",
+        "Phone": "+919825711234"
+    },
+    {
+        "Area": "Mandvi",
+        "Name": "Mandvi Car Care",
+        "Address": "Shop No 50, Mandvi, Vadodara - 390001",
+        "Phone": "+919825712345"
+    }
+]
