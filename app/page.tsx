@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Car, Wrench, Fuel, Truck, Battery, Key, Settings, ArrowRight, Home, Phone } from "lucide-react"
@@ -9,6 +9,15 @@ import Script from "next/script"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useAuth } from "@/hooks/useAuth"
 import { FloatingNav } from "@/components/ui/floating-navbar"
+
+// Extend window type for chatbot config
+declare global {
+  interface Window {
+    chtlConfig?: {
+      chatbotId: string
+    }
+  }
+}
 
 const navItems = [
   { name: "Home", link: "/", icon: <Home /> },
@@ -20,7 +29,81 @@ const navItems = [
 export default function LandingPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin")
+  const [chatbotStatus, setChatbotStatus] = useState<'loading' | 'loaded' | 'failed'>('loading')
   const { user, signOut } = useAuth()
+
+  // Chatbot loading effect
+  useEffect(() => {
+    // Set chatbot config
+    if (typeof window !== 'undefined') {
+      window.chtlConfig = { chatbotId: "6115949275" }
+      
+      let retryCount = 0
+      const maxRetries = 3
+      
+      // Manual script loading as fallback
+      const loadChatbotScript = () => {
+        // Check if script already exists
+        if (document.getElementById('chtl-script-manual')) {
+          return
+        }
+
+        const script = document.createElement('script')
+        script.id = 'chtl-script-manual'
+        script.src = 'https://chatling.ai/js/embed.js'
+        script.async = true
+        script.setAttribute('data-id', '6115949275')
+        script.crossOrigin = 'anonymous'
+        
+        script.onload = () => {
+          console.log('Chatbot script loaded successfully')
+          setChatbotStatus('loaded')
+          
+          // Additional check to see if the widget actually appears
+          setTimeout(() => {
+            const chatWidget = document.querySelector('[data-chatling-widget]') || 
+                             document.querySelector('#chatling-widget') ||
+                             document.querySelector('.chatling-widget')
+            if (!chatWidget) {
+              console.warn('Chatbot script loaded but widget not found in DOM')
+            }
+          }, 2000)
+        }
+        
+        script.onerror = (error) => {
+          console.error('Failed to load chatbot script:', error)
+          retryCount++
+          if (retryCount < maxRetries) {
+            console.log(`Retrying chatbot script load (${retryCount}/${maxRetries})...`)
+            setTimeout(loadChatbotScript, 2000 * retryCount)
+          } else {
+            setChatbotStatus('failed')
+          }
+        }
+        
+        document.head.appendChild(script)
+      }
+
+      // Set initial timeout for loading
+      const timer = setTimeout(() => {
+        // Check if Next.js Script component loaded the script first
+        const existingScript = document.getElementById('chtl-script')
+        if (!existingScript || !existingScript.src) {
+          loadChatbotScript()
+        }
+      }, 1000)
+      
+      // Also set a fallback timer - if nothing loads after 10 seconds, show fallback
+      const fallbackTimer = setTimeout(() => {
+        setChatbotStatus('failed')
+      }, 10000)
+      
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(fallbackTimer)
+      }
+    }
+  }, [])
 
   const services = [
     {
@@ -92,13 +175,21 @@ export default function LandingPage() {
         }}
       />
       
-      {/* Chatbot Embed Script */}
+      {/* Chatbot Embed Script with multiple loading strategies */}
       <Script
         async
         data-id="6115949275"
         id="chtl-script"
         src="https://chatling.ai/js/embed.js"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
+        onLoad={() => {
+          console.log('Chatbot script loaded via Next.js Script')
+          setChatbotStatus('loaded')
+        }}
+        onError={(error) => {
+          console.error('Next.js Script failed to load chatbot:', error)
+          setChatbotStatus('failed')
+        }}
       />
 
       {/* Navigation */}
@@ -299,6 +390,82 @@ export default function LandingPage() {
       </footer>
 
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} initialMode={authMode} />
+      
+      {/* Loading indicator for chatbot */}
+      {chatbotStatus === 'loading' && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <div className="bg-slate-900 border border-slate-700 rounded-lg shadow-xl p-4">
+            <div className="flex items-center space-x-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
+              <span className="text-slate-300 text-sm">Loading chat...</span>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Fallback Chat Widget */}
+      {chatbotStatus === 'failed' && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <div className="bg-slate-900 border border-slate-700 rounded-lg shadow-xl w-80 max-h-96">
+            <div className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white p-3 rounded-t-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="font-medium">Ride Rescue Chat</span>
+                </div>
+                <button 
+                  onClick={() => setChatbotStatus('loading')}
+                  className="text-white/80 hover:text-white"
+                  title="Close chat"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            <div className="p-4 h-64 bg-slate-800 overflow-y-auto">
+              <div className="space-y-3">
+                <div className="bg-slate-700 rounded-lg p-3 text-sm text-slate-200">
+                  👋 Hello! I'm your Ride Rescue assistant. How can I help you today?
+                </div>
+                <div className="text-xs text-slate-400 text-center p-2 bg-slate-900 rounded">
+                  Chat widget temporarily unavailable.<br />
+                  Please call <a href="tel:+918200487838" className="text-emerald-400 hover:text-emerald-300">+91 8200487838</a> for immediate assistance.
+                </div>
+                <div className="text-xs text-slate-500 text-center">
+                  <button 
+                    onClick={() => {
+                      setChatbotStatus('loading')
+                      // Retry loading the script
+                      setTimeout(() => {
+                        window.location.reload()
+                      }, 1000)
+                    }}
+                    className="text-emerald-400 hover:text-emerald-300 underline"
+                  >
+                    Retry chat widget
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="p-3 border-t border-slate-700">
+              <div className="flex space-x-2">
+                <input 
+                  type="text" 
+                  placeholder="Chat temporarily offline..."
+                  className="flex-1 bg-slate-700 text-slate-400 rounded px-3 py-2 text-sm"
+                  disabled
+                />
+                <button 
+                  className="bg-slate-600 text-slate-400 px-4 py-2 rounded text-sm cursor-not-allowed"
+                  disabled
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
