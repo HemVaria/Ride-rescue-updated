@@ -18,12 +18,12 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline';
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://chatling.ai;
               style-src 'self' 'unsafe-inline';
               img-src 'self' data: blob:;
               media-src 'self';
               font-src 'self';
-              connect-src 'self' https://fwtgultjefshvdfnpipw.supabase.co;
+              connect-src 'self' https://fwtgultjefshvdfnpipw.supabase.co https://chatling.ai;
               frame-src 'self' https://fwtgultjefshvdfnpipw.supabase.co https://my.spline.design;
               object-src 'none';
               base-uri 'self';

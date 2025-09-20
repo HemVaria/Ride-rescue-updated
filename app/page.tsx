@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Car, Wrench, Fuel, Truck, Battery, Key, Settings, ArrowRight, Home, Phone } from "lucide-react"
 import Link from "next/link"
+import Script from "next/script"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useAuth } from "@/hooks/useAuth"
 import { FloatingNav } from "@/components/ui/floating-navbar"
@@ -82,6 +83,24 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      {/* Chatbot Configuration */}
+      <Script
+        id="chatbot-config"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `window.chtlConfig = { chatbotId: "6115949275" }`,
+        }}
+      />
+      
+      {/* Chatbot Embed Script */}
+      <Script
+        async
+        data-id="6115949275"
+        id="chtl-script"
+        src="https://chatling.ai/js/embed.js"
+        strategy="afterInteractive"
+      />
+
       {/* Navigation */}
       <FloatingNav navItems={navItems} />
 
