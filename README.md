@@ -98,88 +98,67 @@ All data is encrypted and accessible only to verified service providers.
 
 ## ⚡ Quick Start  
 
-## Installation
+### 🧩 Installation  
 
+```bash
 git clone https://github.com/hemvaria/ride-rescue.git
 cd ride-rescue
 npm install
+```
 
+### 🏃 Run Dev Server  
 
-##  Run Dev Server
-
+```bash
 npm run dev
+```
 
+---
 
-------------------
+## 🗺️ Roadmap  
 
-🗺️ Roadmap
-✅ Current (v1.0)
+### ✅ Current (v1.0)
+- SOS system  
+- Location-based provider matching  
+- Fuel delivery  
+- Responsive UI  
 
-SOS system
+### 🚀 Coming Soon (v2.0)
+- Real-time tracking  
+- Rating & reviews  
+- In-app chat  
+- Voice SOS  
+- Admin dashboard  
+- Push notifications  
+- Payment integration  
 
-Location-based provider matching
+### 🔮 Future Vision
+- AI diagnostics  
+- Subscription plans  
+- Multi-language support  
+- Insurance integration  
 
-Fuel delivery
+---
 
-Responsive UI
+## 🤝 Contributing  
 
-🚀 Coming Soon (v2.0)
+We ❤️ open source!  
 
-Real-time tracking
+Found a bug? → [Open an issue](https://github.com/hemvaria/ride-rescue/issues)  
+Have an idea? → [Request a feature](https://github.com/hemvaria/ride-rescue/issues)  
+Want to code? → Fork the repo and make a pull request!  
 
-Rating & reviews
+---
 
-In-app chat
+## 👨‍💻 Author  
 
-Voice SOS
+**Hem Varia**  
+🚀 Student | Freelancer | Developer | Designer  
 
-Admin dashboard
+[🌐 Portfolio](#) • [🐙 GitHub](https://github.com/hemvaria) • [💼 LinkedIn](#) • [📸 Instagram](#)  
 
-Push notifications
+---
 
-Payment integration
+## 📄 License  
 
-🔮 Future Vision
-
-AI diagnostics
-
-Subscription plans
-
-Multi-language support
-
-Insurance integration
-
-🤝 Contributing
-
-We ❤️ open source!
-
-Found a bug?
-
-Open an issue
-
-Have an idea?
-
-Request a feature
-
-Want to code?
-
-Fork the repo and make a pull request!
-
-👨‍💻 Author
-
-Hem Varia
-🚀 Student | Freelancer | Developer | Designer
-
-Portfolio
-
-GitHub
-
-LinkedIn
-
-Instagram
-
-📄 License
-
-Distributed under the MIT License.
-See LICENSE
- for more information.
+Distributed under the **MIT License**.  
+See [`LICENSE`](LICENSE) for more information.
