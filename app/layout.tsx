@@ -5,9 +5,8 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "@/components/ui/toaster"
-import { Home, Wrench, Car, Info } from "lucide-react"
+import { Home, Wrench, Car, Info, Map, LayoutDashboard, Bot, CreditCard } from "lucide-react"
 import { InteractiveMenu } from "@/components/ui/modern-mobile-menu"
-import ChatlingWidget from "@/components/ChatlingWidget"
 import CursorBlob from "@/components/ui/cursor-blob"
 import GlobalBackground from "@/components/ui/global-background"
 
@@ -36,16 +35,26 @@ export default function RootLayout({
 }) {
   const navItems = [
     { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
-    { name: "About", link: "/about", icon: <Info className="h-4 w-4" /> },
     { name: "Services", link: "/services", icon: <Wrench className="h-4 w-4" /> },
     { name: "Dashboard", link: "/dashboard", icon: <Car className="h-4 w-4" /> },
+    { name: "AI Fix", link: "/diagnostics", icon: <Bot className="h-4 w-4" /> },
+    { name: "Pricing", link: "/pricing", icon: <CreditCard className="h-4 w-4" /> },
   ]
   return (
     <html lang="en" suppressHydrationWarning>
+      <head />
       <body className={inter.className}>
+        <script dangerouslySetInnerHTML={{ __html: 'window.chtlConfig = { chatbotId: "6115949275" }' }} />
+        <script
+          async
+          data-id="6115949275"
+          id="chtl-script"
+          type="text/javascript"
+          src="https://chatling.ai/js/embed.js"
+        />
         {/* Global background effect behind everything */}
         <GlobalBackground />
-        <ChatlingWidget />
+
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <AuthProvider>
             {/* Colorful cursor-follow blob (disabled on touch and reduced-motion) */}

@@ -538,7 +538,10 @@ export default function ServicesPage() {
           <LocationBasedServices
             selectedService={selectedService}
             onMechanicSelect={(mechanic) => {
-              console.log("Selected mechanic:", mechanic)
+              if (typeof window !== 'undefined') {
+                sessionStorage.setItem('current_booking', JSON.stringify(mechanic));
+              }
+              router.push("/tracking")
             }}
           />
         </div>

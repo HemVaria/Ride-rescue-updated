@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Wrench, Car, Phone, Info } from 'lucide-react';
+import { Home, Wrench, Car, Phone, Info, Map, Bot, CreditCard } from 'lucide-react';
 
 export interface InteractiveMenuItem {
   label: string;
@@ -24,6 +24,8 @@ const labelToIcon = (label: string) => {
   if (key === 'dashboard') return Car;
   if (key === 'contact') return Phone;
   if (key === 'about') return Info;
+  if (key === 'ai fix') return Bot;
+  if (key === 'pricing') return CreditCard;
   return Home;
 };
 

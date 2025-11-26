@@ -122,3 +122,9 @@ body {
   60% { transform: translateY(-0.1em); }
   80% { transform: translateY(0); }
 }
+
+/* Force Chatling widget to be on top */
+[id^="chatling"], .chatling-bubble, #chatling-bubble-container, iframe#chatling-bubble {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+}

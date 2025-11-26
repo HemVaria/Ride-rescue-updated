@@ -42,7 +42,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.googleapis.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://*.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://v0.blob.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://*.googleapis.com wss://*.supabase.co https://v0.blob.com; frame-src 'self' https://www.youtube.com;",
+              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.googleapis.com https://va.vercel-scripts.com https://chatling.ai https://*.chatling.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://*.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://v0.blob.com https://chatling.ai https://*.chatling.ai; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://*.googleapis.com wss://*.supabase.co https://v0.blob.com https://chatling.ai https://*.chatling.ai; frame-src 'self' https://www.youtube.com https://chatling.ai https://*.chatling.ai;",
           },
         ],
       },
