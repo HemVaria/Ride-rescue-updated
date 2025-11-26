@@ -49,6 +49,11 @@ With just one tap, connect with certified mechanics, get fuel delivered, or requ
 
 ## ✨ Features  
 
+### 🎨 Modern UI & Animations
+- **Glassmorphism Design**: Sleek, modern interface with frosted glass effects.
+- **Smooth Transitions**: Powered by `framer-motion` for a seamless user experience.
+- **Interactive Elements**: Tilt effects, hover animations, and staggered content loading.
+
 ### 🔧 Instant Mechanic Request  
 One-tap SOS connects you with **certified mechanics nearby**. Fast, reliable, no guessing.  
 
@@ -79,10 +84,10 @@ All data is encrypted and accessible only to verified service providers.
 
 ## 🛠️ Tech Stack  
 
-**Frontend:** Next.js 14, React, TypeScript  
-**Styling:** Tailwind CSS, CSS Modules  
+**Frontend:** Next.js 15 (App Router), React, TypeScript  
+**Styling:** Tailwind CSS, CSS Modules, Framer Motion  
 **Backend:** Supabase (PostgreSQL, Auth, Realtime)  
-**Maps:** Google Maps API / Mapbox  
+**Maps:** Leaflet (OpenStreetMap) / Google Maps API  
 **Deployment:** Vercel (CI/CD)  
 **State Management:** React Hooks, Context API  
 
@@ -121,6 +126,9 @@ npm run dev
 - Location-based provider matching  
 - Fuel delivery  
 - Responsive UI  
+- **New:** About Page & Enhanced Services Page
+- **New:** Vertical History Timeline
+- **New:** Vehicle Management with Animations
 
 ### 🚀 Coming Soon (v2.0)
 - Real-time tracking  
