@@ -36,9 +36,12 @@ export async function POST(request: Request) {
 
   try {
     const genAI = new GoogleGenerativeAI(API_KEY)
-    const model = genAI.getGenerativeModel({ model: MODEL })
+    const model = genAI.getGenerativeModel({ 
+      model: MODEL,
+      systemInstruction: SYSTEM_INSTRUCTIONS 
+    })
+    
     const result = await model.generateContent({
-      systemInstruction: { role: "system", parts: [{ text: SYSTEM_INSTRUCTIONS }] },
       contents: [{ role: "user", parts: [{ text: prompt }]}],
     })
 
@@ -65,8 +68,14 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(responsePayload)
-  } catch (error) {
-    console.error("Gemini diagnostics error", error)
-    return NextResponse.json({ error: "Gemini diagnostics failed. Please try again." }, { status: 500 })
+  } catch (error: any) {
+    console.error("Gemini diagnostics error:", error?.message || error)
+    return NextResponse.json(
+      { 
+        error: "Gemini diagnostics failed. Please try again.",
+        details: error?.message || "Unknown error"
+      }, 
+      { status: 500 }
+    )
   }
 }
