@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { MapView } from "@/components/MapView"
+import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+
+const DynamicMapView = dynamic(() => import("@/components/MapView").then((mod) => mod.MapView), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-slate-900 text-slate-400">
+      Loading map...
+    </div>
+  ),
+})
 
 export default function TrackingPage() {
   const router = useRouter()
@@ -288,7 +297,7 @@ export default function TrackingPage() {
           transition={{ delay: 0.2 }}
           className="lg:col-span-2 h-[600px] lg:h-auto min-h-[500px] rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative bg-slate-900"
         >
-           <MapView 
+           <DynamicMapView 
              location={userLocation}
              providers={[provider]}
              center={{ 
