@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
 import { Card, CardContent } from "@/components/ui/card"
-import { TextPressure } from "@/components/ui/interactive-text-pressure"
+import ShinyText from "@/components/ShinyText"
 import { BlurText } from "@/components/ui/animated-blur-text"
 import { Car, Wrench, Fuel, Truck, Battery, Key, Settings, ArrowRight, Home, Phone } from "lucide-react"
 import Link from "next/link"
@@ -112,7 +112,7 @@ export default function LandingPage() {
 
       {/* Hero Section centered - replaced with bold, interactive text */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-10 md:pt-14">
-        <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/80 to-transparent" />
         <div className="relative z-10 w-full max-w-5xl px-4 md:px-8">
           <div className="mx-auto flex flex-col items-center gap-0">
             {/* On Demand banner above main title */}
@@ -125,17 +125,12 @@ export default function LandingPage() {
                 className="font-mono font-semibold tracking-tight normal-case antialiased text-slate-200 text-center max-w-4xl text-xl md:text-2xl lg:text-3xl leading-none mx-auto justify-center -mb-1 md:-mb-2"
               />
             </div>
-            <div className="w-full -mt-2 md:-mt-3">
-              <TextPressure
-                text="Ride Rescue"
-                flex={false}
-                alpha={false}
-                stroke={false}
-                width
-                weight
-                italic
-                minFontSize={64}
-                className="cursor-default tracking-tight"
+            <div className="w-full flex justify-center items-center my-2">
+              <ShinyText 
+                text="Ride Rescue" 
+                disabled={false} 
+                speed={3} 
+                className="text-6xl md:text-8xl font-bold tracking-tighter" 
               />
             </div>
             <BlurText

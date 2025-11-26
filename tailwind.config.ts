@@ -87,12 +87,17 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        shine: {
+          "0%": { "background-position": "100%" },
+          "100%": { "background-position": "-100%" },
+        },
       },
       animation: {
         "shimmer-slide": "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        shine: "shine 5s linear infinite",
       },
     },
   },
