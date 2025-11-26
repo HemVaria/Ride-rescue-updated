@@ -9,6 +9,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "latest",
