@@ -1,49 +1,52 @@
-/** @type {import('next').NextConfig} */
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-let supabaseOrigin = ''
-try {
-  if (supabaseUrl) {
-    supabaseOrigin = new URL(supabaseUrl).origin
-  }
-} catch {}
+import withPWAInit from "@ducanh2912/next-pwa";
 
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+const withPWA = withPWAInit({
+  dest: "public",
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  disable: process.env.NODE_ENV === "development",
+  workboxOptions: {
+    disableDevLogs: true,
   },
+});
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  images: {
-    unoptimized: true,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "2mb",
+    },
+  },
+  // Security headers
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/(.*)",
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: `
-              default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://chatling.ai https://*.chatling.ai;
-              style-src 'self' 'unsafe-inline';
-              img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://chatling.ai https://*.chatling.ai;
-              media-src 'self';
-              font-src 'self' https://res.cloudinary.com;
-              connect-src 'self' ${supabaseOrigin} https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://chatling.ai https://*.chatling.ai;
-              frame-src 'self' ${supabaseOrigin} https://chatling.ai https://*.chatling.ai;
-              object-src 'none';
-              base-uri 'self';
-              form-action 'self';
-              frame-ancestors 'self';
-              upgrade-insecure-requests;
-            `.replace(/\s{2,}/g, ' ').trim(),
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.googleapis.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://*.googleapis.com https://maps.gstatic.com https://*.googleusercontent.com https://v0.blob.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://*.googleapis.com wss://*.supabase.co https://v0.blob.com; frame-src 'self' https://www.youtube.com;",
           },
         ],
       },
-    ];
+    ]
   },
 }
 
-export default nextConfig
+export default withPWA(nextConfig);

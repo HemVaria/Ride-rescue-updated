@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -13,11 +13,20 @@ import GlobalBackground from "@/components/ui/global-background"
 
 const inter = Inter({ subsets: ["latin"] })
 
+export const viewport: Viewport = {
+  themeColor: "#10b981",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
 export const metadata: Metadata = {
   title: "Ride Rescue - 24/7 Roadside Assistance",
   description:
     "Professional roadside assistance when you need it most. Available 24/7 for emergency repairs, towing, fuel delivery, and more.",
   generator: "hehehem",
+  manifest: "/manifest.webmanifest",
 }
 
 export default function RootLayout({
