@@ -21,6 +21,7 @@ const navItems = [
 ]
 
 export default function LandingPage() {
+  // Force fresh deployment - Nov 26 2025
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin")
   const { user, signOut } = useAuth()
