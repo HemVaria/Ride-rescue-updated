@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash"
+const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash"
 const API_KEY = process.env.GEMINI_API_KEY
 
 const SYSTEM_INSTRUCTIONS = `You are Ride Rescue's master mechanic AI assistant. You turn free-form driver complaints into a concise diagnosis with actionable guidance. Always:
