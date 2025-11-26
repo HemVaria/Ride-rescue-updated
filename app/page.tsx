@@ -10,7 +10,8 @@ import { Car, Wrench, Fuel, Truck, Battery, Key, Settings, ArrowRight, Home, Pho
 import Link from "next/link"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { useAuth } from "@/hooks/useAuth"
-// Background is global now
+import { Tilt } from "@/components/ui/tilt"
+import { motion } from "framer-motion"
 
 const navItems = [
   { name: "Home", link: "/", icon: <Home /> },
@@ -83,13 +84,34 @@ export default function LandingPage() {
     setAuthModalOpen(true)
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  }
+
   return (
     <div className="min-h-screen text-white">
-  {/* Top nav is provided by global AppBar in layout */}
+      {/* Top nav is provided by global AppBar in layout */}
 
       {/* Hero Section centered - replaced with bold, interactive text */}
-  <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-10 md:pt-14">
-  <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-10 md:pt-14">
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-black/10 to-transparent" />
         <div className="relative z-10 w-full max-w-5xl px-4 md:px-8">
           <div className="mx-auto flex flex-col items-center gap-0">
             {/* On Demand banner above main title */}
@@ -122,7 +144,12 @@ export default function LandingPage() {
               direction="top"
               className="text-slate-300 text-center max-w-3xl text-lg md:text-xl lg:text-2xl mx-auto justify-center"
             />
-            <div className="w-full max-w-md mt-2 md:mt-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="w-full max-w-md mt-6 md:mt-8"
+            >
               {user ? (
                 <Link href="/dashboard">
                   <ShimmerButton className="w-full shadow-2xl [--bg:linear-gradient(90deg,#10b981,#06b6d4)]">
@@ -140,78 +167,113 @@ export default function LandingPage() {
                       <ArrowRight className="w-5 h-5" />
                     </span>
                   </ShimmerButton>
-                  <Button variant="outline" onClick={() => openAuth("signin")} className="w-full border-slate-600 text-slate-300 bg-slate-900/50 hover:bg-slate-800/50 backdrop-blur-sm py-3">
+                  <Button variant="outline" onClick={() => openAuth("signin")} className="w-full border-slate-600 text-slate-300 bg-slate-900/50 hover:bg-slate-800/50 backdrop-blur-sm py-6 text-lg transition-all hover:scale-[1.02]">
                     Sign In
                   </Button>
                 </div>
               )}
-            </div>
+            </motion.div>
             {/* Secondary banner moved above title */}
           </div>
         </div>
+
         {/* Removed bottom-hero banner; secondary line now below CTA */}
       </section>
 
       {/* Featured Services */}
-      <section className="px-6 py-20 bg-slate-900/50">
+      <section className="px-6 py-20 bg-slate-900/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-4xl font-bold mb-4 text-white">Quick Emergency Services</h2>
             <p className="text-xl text-slate-300">Professional help at your fingertips</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          </motion.div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
             {services.map((service, index) => (
-              <Card
-                key={index}
-                className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 hover:bg-slate-800/80 transition-all duration-500 shadow-xl hover:shadow-emerald-500/20 transform hover:scale-105 hover:-translate-y-2"
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="bg-emerald-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-6 flex items-center justify-center backdrop-blur-sm border border-emerald-500/30">
-                    <service.icon className={`w-8 h-8 ${service.color}`} />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-white">{service.title}</h3>
-                  <p className="text-slate-300 leading-relaxed">{service.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={itemVariants}>
+                <Tilt rotationFactor={10} isRevese>
+                  <Card
+                    className="bg-slate-900/60 backdrop-blur-xl border-slate-700/50 hover:bg-slate-800/80 transition-all duration-500 shadow-xl hover:shadow-emerald-500/20 h-full"
+                  >
+                    <CardContent className="p-8 text-center h-full flex flex-col items-center justify-center">
+                      <div className="bg-emerald-500/20 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center backdrop-blur-sm border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <service.icon className={`w-10 h-10 ${service.color}`} />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-4 text-white">{service.title}</h3>
+                      <p className="text-slate-300 leading-relaxed">{service.description}</p>
+                    </CardContent>
+                  </Card>
+                </Tilt>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Detailed Services Grid */}
-      <section id="services" className="px-6 py-20 bg-slate-800/50">
+      <section id="services" className="px-6 py-20 bg-slate-800/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-4xl font-bold mb-6 text-white">Our Complete Services</h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Professional roadside assistance whenever you need it. Our certified technicians are equipped to handle
               any automotive emergency.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {detailedServices.map((service, index) => (
-              <Card
-                key={index}
-                className="bg-slate-900/80 backdrop-blur-xl border-slate-700/50 hover:bg-slate-800/80 transition-all duration-500 group shadow-xl hover:shadow-cyan-500/20 transform hover:scale-105"
-              >
-                <CardContent className="p-6">
-                  <div className="bg-cyan-500/20 rounded-lg p-3 w-12 h-12 mb-4 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 backdrop-blur-sm border border-cyan-500/30 group-hover:border-emerald-500/30">
-                    <service.icon className="w-6 h-6 text-cyan-400 group-hover:text-emerald-400 transition-colors duration-300" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-3 text-white">{service.title}</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{service.description}</p>
-                </CardContent>
-              </Card>
+              <motion.div key={index} variants={itemVariants}>
+                <Card
+                  className="bg-slate-900/60 backdrop-blur-xl border-slate-700/50 hover:bg-slate-800/80 transition-all duration-500 group shadow-xl hover:shadow-cyan-500/20 hover:-translate-y-1 h-full"
+                >
+                  <CardContent className="p-6">
+                    <div className="bg-cyan-500/20 rounded-lg p-3 w-12 h-12 mb-4 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 backdrop-blur-sm border border-cyan-500/30 group-hover:border-emerald-500/30">
+                      <service.icon className="w-6 h-6 text-cyan-400 group-hover:text-emerald-400 transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-3 text-white">{service.title}</h3>
+                    <p className="text-slate-300 text-sm leading-relaxed">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="px-6 py-20 text-center bg-slate-900/50">
+      <section className="px-6 py-20 text-center bg-slate-900/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto space-y-10">
-          <div className="bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-500/10 rounded-3xl p-12 border border-slate-700/50 backdrop-blur-xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-500/10 rounded-3xl p-12 border border-slate-700/50 backdrop-blur-xl shadow-2xl"
+          >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to get started?</h2>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed">
               Join thousands of drivers who trust Ride Rescue for their roadside assistance needs.
@@ -233,18 +295,18 @@ export default function LandingPage() {
                 </span>
               </ShimmerButton>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-700/50 px-6 py-12 bg-slate-900/80">
+      <footer className="border-t border-slate-700/50 px-6 py-12 bg-slate-950/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <Car className="w-8 h-8 text-emerald-400" />
-                <span className="text-2xl font-bold">Ride Rescue</span>
+                <span className="text-2xl font-bold text-white">Ride Rescue</span>
               </div>
               <p className="text-slate-400 leading-relaxed">
                 Professional 24/7 roadside assistance across Gujarat. Your trusted partner for automotive emergencies.
@@ -253,18 +315,18 @@ export default function LandingPage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Services</h4>
               <ul className="space-y-2 text-slate-400">
-                <li>Emergency Towing</li>
-                <li>Battery Jump Start</li>
-                <li>Fuel Delivery</li>
-                <li>Lockout Service</li>
+                <li className="hover:text-emerald-400 transition-colors cursor-pointer">Emergency Towing</li>
+                <li className="hover:text-emerald-400 transition-colors cursor-pointer">Battery Jump Start</li>
+                <li className="hover:text-emerald-400 transition-colors cursor-pointer">Fuel Delivery</li>
+                <li className="hover:text-emerald-400 transition-colors cursor-pointer">Lockout Service</li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-slate-400">
-                <li>+91 8200487838</li>
-                <li>24/7 Emergency</li>
-                <li>Vadodara, Gujarat</li>
+                <li className="flex items-center gap-2"><Phone className="w-4 h-4" /> +91 8200487838</li>
+                <li className="flex items-center gap-2"><Clock className="w-4 h-4" /> 24/7 Emergency</li>
+                <li className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Vadodara, Gujarat</li>
               </ul>
             </div>
           </div>
@@ -276,5 +338,45 @@ export default function LandingPage() {
 
       <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} initialMode={authMode} />
     </div>
+  )
+}
+
+function Clock(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
+
+function MapPin(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
   )
 }

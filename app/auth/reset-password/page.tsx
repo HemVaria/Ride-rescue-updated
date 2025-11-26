@@ -5,12 +5,12 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react"
+import { Lock, Eye, EyeOff, Loader2, CheckCircle, AlertCircle } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export default function ResetPassword() {
   const router = useRouter()
@@ -28,7 +28,7 @@ export default function ResetPassword() {
     if (passwords.password !== passwords.confirmPassword) {
       setMessage({
         type: "error",
-        text: "Passwords do not match. Please check and try again.",
+        text: "Passwords do not match.",
       })
       return
     }
@@ -36,7 +36,7 @@ export default function ResetPassword() {
     if (passwords.password.length < 6) {
       setMessage({
         type: "error",
-        text: "Password must be at least 6 characters long.",
+        text: "Password must be at least 6 characters.",
       })
       return
     }
@@ -53,12 +53,12 @@ export default function ResetPassword() {
       if (error) {
         setMessage({
           type: "error",
-          text: error.message || "Failed to update password. Please try again.",
+          text: error.message || "Failed to update password.",
         })
       } else {
         setMessage({
           type: "success",
-          text: "Password updated successfully! Redirecting to dashboard...",
+          text: "Password updated successfully!",
         })
 
         setTimeout(() => {
@@ -69,7 +69,7 @@ export default function ResetPassword() {
       console.error("Update password error:", error)
       setMessage({
         type: "error",
-        text: "An unexpected error occurred. Please try again.",
+        text: "An unexpected error occurred.",
       })
     } finally {
       setLoading(false)
@@ -77,80 +77,113 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <Card className="bg-slate-900 border-slate-700 w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-slate-100 text-center">Update Your Password</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {message && (
-            <Alert
-              className={`${
-                message.type === "error" ? "border-red-500 bg-red-500/10" : "border-green-500 bg-green-500/10"
-              }`}
-            >
-              {message.type === "error" ? (
-                <AlertCircle className="h-4 w-4 text-red-500" />
-              ) : (
-                <CheckCircle className="h-4 w-4 text-green-500" />
-              )}
-              <AlertDescription className={`${message.type === "error" ? "text-red-200" : "text-green-200"}`}>
-                {message.text}
-              </AlertDescription>
-            </Alert>
-          )}
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-black">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-600/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl" />
 
-          <form onSubmit={handleUpdatePassword} className="space-y-4">
-            <div>
-              <Label htmlFor="password" className="text-slate-300">
-                New Password
-              </Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md relative z-10"
+      >
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl p-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="text-center mb-8">
+              <div className="mx-auto w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm border border-emerald-500/30">
+                <Lock className="w-6 h-6 text-emerald-400" />
+              </div>
+              <h1 className="text-2xl font-bold text-white mb-2">Set New Password</h1>
+              <p className="text-slate-400 text-sm">
+                Your new password must be different from previously used passwords.
+              </p>
+            </div>
+
+            <AnimatePresence mode="wait">
+              {message && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={cn(
+                    "mb-6 p-4 rounded-lg border flex items-start gap-3 text-sm",
+                    message.type === "error"
+                      ? "bg-red-500/10 border-red-500/20 text-red-200"
+                      : "bg-emerald-500/10 border-emerald-500/20 text-emerald-200"
+                  )}
+                >
+                  {message.type === "error" ? (
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                  ) : (
+                    <CheckCircle className="w-5 h-5 shrink-0" />
+                  )}
+                  <span>{message.text}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <form onSubmit={handleUpdatePassword} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-slate-300">New Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={passwords.password}
+                    onChange={(e) => setPasswords({ ...passwords, password: e.target.value })}
+                    className="bg-black/20 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20 pr-10"
+                    placeholder="Enter new password"
+                    required
+                    minLength={6}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-0 top-0 h-full px-3 text-slate-400 hover:text-white hover:bg-transparent"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-slate-300">Confirm Password</Label>
                 <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={passwords.password}
-                  onChange={(e) => setPasswords({ ...passwords, password: e.target.value })}
-                  className="pl-10 pr-10 bg-slate-800 border-slate-600 text-slate-100"
-                  placeholder="Enter new password (min 6 characters)"
+                  id="confirmPassword"
+                  type="password"
+                  value={passwords.confirmPassword}
+                  onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+                  className="bg-black/20 border-white/10 text-white placeholder:text-white/30 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                  placeholder="Confirm new password"
                   required
                   minLength={6}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </Button>
               </div>
-            </div>
 
-            <div>
-              <Label htmlFor="confirmPassword" className="text-slate-300">
-                Confirm New Password
-              </Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={passwords.confirmPassword}
-                onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
-                className="bg-slate-800 border-slate-600 text-slate-100"
-                placeholder="Confirm new password"
-                required
-                minLength={6}
-              />
-            </div>
-
-            <Button type="submit" disabled={loading} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-              {loading ? "Updating..." : "Update Password"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-11 font-medium shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Updating Password...
+                  </>
+                ) : (
+                  "Reset Password"
+                )}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </motion.div>
     </div>
   )
 }

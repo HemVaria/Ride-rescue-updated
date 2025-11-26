@@ -5,7 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/hooks/useAuth"
 import { Toaster } from "@/components/ui/toaster"
-import { Home, Wrench, Car } from "lucide-react"
+import { Home, Wrench, Car, Info } from "lucide-react"
 import { InteractiveMenu } from "@/components/ui/modern-mobile-menu"
 import ChatlingWidget from "@/components/ChatlingWidget"
 import CursorBlob from "@/components/ui/cursor-blob"
@@ -27,6 +27,7 @@ export default function RootLayout({
 }) {
   const navItems = [
     { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
+    { name: "About", link: "/about", icon: <Info className="h-4 w-4" /> },
     { name: "Services", link: "/services", icon: <Wrench className="h-4 w-4" /> },
     { name: "Dashboard", link: "/dashboard", icon: <Car className="h-4 w-4" /> },
   ]

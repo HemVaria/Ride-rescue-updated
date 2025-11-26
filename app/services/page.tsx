@@ -23,6 +23,7 @@ import { Tilt } from "@/components/ui/tilt"
 import { Spotlight } from "@/components/ui/spotlight"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
+import { motion } from "framer-motion"
 
 const LeafletMap = dynamic(() => import("@/components/ui/leaflet-map").then(mod => mod.LeafletMap), { ssr: false })
 const LocationBasedServices = dynamic(() => import("@/components/LocationBasedServices").then(mod => mod.LocationBasedServices), { ssr: false })
@@ -221,11 +222,37 @@ export default function ServicesPage() {
     }
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  }
+
   return (
     <div className="min-h-screen text-slate-100">
       <div className="container mx-auto px-4 py-8 space-y-8 pt-32">
         {/* Header */}
-        <div className="text-center space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center space-y-4"
+        >
           <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
             Roadside Assistance Services
           </h1>
@@ -233,42 +260,52 @@ export default function ServicesPage() {
             Professional automotive services available 24/7 across Gujarat. Find trusted mechanics and emergency
             assistance near you - powered by free OpenStreetMap.
           </p>
-        </div>
+        </motion.div>
 
         {/* Emergency Contact */}
-  <Card className="bg-gradient-to-r from-red-900/20 to-orange-900/20 border-red-500/30 backdrop-blur-xl shadow-xl">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center space-x-4">
-                <div className="p-3 bg-red-500/20 rounded-full">
-                  <AlertTriangle className="w-6 h-6 text-red-400" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <Card className="bg-gradient-to-r from-red-900/20 to-orange-900/20 border-red-500/30 backdrop-blur-xl shadow-xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-red-500/20 rounded-full">
+                    <AlertTriangle className="w-6 h-6 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-100">Emergency Assistance</h3>
+                    <p className="text-slate-300">24/7 emergency roadside support</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-100">Emergency Assistance</h3>
-                  <p className="text-slate-300">24/7 emergency roadside support</p>
+                <div className="flex space-x-3 flex-wrap">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowMap(!showMap)}
+                    className="border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
+                  >
+                    <Map className="w-4 h-4 mr-2" />
+                    {showMap ? "Hide Map" : "Show Locations"}
+                  </Button>
+                  <Button onClick={handleEmergencyCall} className="bg-red-600 hover:bg-red-700 text-white">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Call Now: +91 8200487838
+                  </Button>
                 </div>
               </div>
-              <div className="flex space-x-3 flex-wrap">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowMap(!showMap)}
-                  className="border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
-                >
-                  <Map className="w-4 h-4 mr-2" />
-                  {showMap ? "Hide Map" : "Show Locations"}
-                </Button>
-                <Button onClick={handleEmergencyCall} className="bg-red-600 hover:bg-red-700 text-white">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call Now: +91 8200487838
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Free OpenStreetMap Integration */}
         {showMap && (
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="space-y-4 overflow-hidden"
+          >
             <Card className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 shadow-xl">
               <CardHeader>
                 <CardTitle className="text-slate-100 flex items-center space-x-2">
@@ -294,177 +331,206 @@ export default function ServicesPage() {
 
             {/* Selected Location Info */}
             {selectedLocation && (
-              <Card className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 shadow-xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-3 bg-emerald-500/20 rounded-full">
-                        <MapPin className="w-6 h-6 text-emerald-400" />
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 shadow-xl">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 bg-emerald-500/20 rounded-full">
+                          <MapPin className="w-6 h-6 text-emerald-400" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-slate-100">{selectedLocation.title}</h3>
+                          <p className="text-slate-300">{selectedLocation.info}</p>
+                          <p className="text-sm text-slate-400 mt-1 flex items-center space-x-1">
+                            <Clock className="w-3 h-3" />
+                            <span>Available 24/7 for emergencies</span>
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-slate-100">{selectedLocation.title}</h3>
-                        <p className="text-slate-300">{selectedLocation.info}</p>
-                        <p className="text-sm text-slate-400 mt-1 flex items-center space-x-1">
-                          <Clock className="w-3 h-3" />
-                          <span>Available 24/7 for emergencies</span>
-                        </p>
+                      <div className="flex space-x-2 flex-wrap">
+                        <Button
+                          onClick={() => handleNavigateToLocation(selectedLocation)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Navigation className="w-4 h-4 mr-2" />
+                          Get Directions
+                        </Button>
+                        <Button onClick={handleEmergencyCall} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                          <Phone className="w-4 h-4 mr-2" />
+                          Call Now
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setSelectedLocation(null)}
+                          className="border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
+                        >
+                          Close
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex space-x-2 flex-wrap">
-                      <Button
-                        onClick={() => handleNavigateToLocation(selectedLocation)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <Navigation className="w-4 h-4 mr-2" />
-                        Get Directions
-                      </Button>
-                      <Button onClick={handleEmergencyCall} className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                        <Phone className="w-4 h-4 mr-2" />
-                        Call Now
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => setSelectedLocation(null)}
-                        className="border-slate-600 text-slate-300 bg-slate-800/50 hover:bg-slate-700/50"
-                      >
-                        Close
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         )}
 
         {/* Emergency Services with Tilt Effect */}
         <div className="space-y-6">
-          <div className="flex items-center space-x-2">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center space-x-2"
+          >
             <AlertTriangle className="w-6 h-6 text-red-400" />
             <h2 className="text-2xl font-bold text-slate-100">Emergency Services</h2>
             <Badge className="bg-red-500/20 text-red-400">24/7 Available</Badge>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {emergencyServices.map((service) => {
               const IconComponent = service.icon
               return (
-                <Tilt
-                  key={service.id}
-                  rotationFactor={8}
-                  springOptions={{
-                    stiffness: 26.7,
-                    damping: 4.1,
-                    mass: 0.2,
-                  }}
-                >
-                  <Card
-                    className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 hover:bg-slate-800/70 transition-colors cursor-pointer h-full group shadow-xl"
-                    onClick={() => handleServiceSelect(service.title)}
+                <motion.div key={service.id} variants={itemVariants}>
+                  <Tilt
+                    rotationFactor={8}
+                    springOptions={{
+                      stiffness: 26.7,
+                      damping: 4.1,
+                      mass: 0.2,
+                    }}
                   >
-                    <Spotlight
-                      className="z-10 from-red-500/20 via-red-400/10 to-transparent blur-2xl"
-                      size={200}
-                      springOptions={{
-                        stiffness: 26.7,
-                        damping: 4.1,
-                        mass: 0.2,
-                      }}
-                    />
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-red-500/20 rounded-lg">
-                          <IconComponent className="w-5 h-5 text-red-400" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg text-slate-100">{service.title}</CardTitle>
-                          <Badge variant="secondary" className="bg-red-500/20 text-red-400 text-xs">
-                            {service.price}
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <p className="text-slate-300 text-sm">{service.description}</p>
-                      <div className="space-y-1">
-                        {service.features.map((feature, index) => (
-                          <div key={index} className="flex items-center space-x-2 text-xs text-slate-400">
-                            <div className="w-1 h-1 bg-emerald-400 rounded-full" />
-                            <span>{feature}</span>
+                    <Card
+                      className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 hover:bg-slate-800/70 transition-colors cursor-pointer h-full group shadow-xl"
+                      onClick={() => handleServiceSelect(service.title)}
+                    >
+                      <Spotlight
+                        className="z-10 from-red-500/20 via-red-400/10 to-transparent blur-2xl"
+                        size={200}
+                        springOptions={{
+                          stiffness: 26.7,
+                          damping: 4.1,
+                          mass: 0.2,
+                        }}
+                      />
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-red-500/20 rounded-lg">
+                            <IconComponent className="w-5 h-5 text-red-400" />
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Tilt>
+                          <div>
+                            <CardTitle className="text-lg text-slate-100">{service.title}</CardTitle>
+                            <Badge variant="secondary" className="bg-red-500/20 text-red-400 text-xs">
+                              {service.price}
+                            </Badge>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <p className="text-slate-300 text-sm">{service.description}</p>
+                        <div className="space-y-1">
+                          {service.features.map((feature, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-xs text-slate-400">
+                              <div className="w-1 h-1 bg-emerald-400 rounded-full" />
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Tilt>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
 
         {/* Regular Services with Tilt Effect */}
         <div className="space-y-6">
-          <div className="flex items-center space-x-2">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center space-x-2"
+          >
             <Wrench className="w-6 h-6 text-emerald-400" />
             <h2 className="text-2xl font-bold text-slate-100">Regular Services</h2>
             <Badge className="bg-emerald-500/20 text-emerald-400">Professional Care</Badge>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {regularServices.map((service) => {
               const IconComponent = service.icon
               return (
-                <Tilt
-                  key={service.id}
-                  rotationFactor={8}
-                  springOptions={{
-                    stiffness: 26.7,
-                    damping: 4.1,
-                    mass: 0.2,
-                  }}
-                >
-                  <Card
-                    className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 hover:bg-slate-800/70 transition-colors cursor-pointer h-full group shadow-xl"
-                    onClick={() => handleServiceSelect(service.title)}
+                <motion.div key={service.id} variants={itemVariants}>
+                  <Tilt
+                    rotationFactor={8}
+                    springOptions={{
+                      stiffness: 26.7,
+                      damping: 4.1,
+                      mass: 0.2,
+                    }}
                   >
-                    <Spotlight
-                      className="z-10 from-emerald-500/20 via-emerald-400/10 to-transparent blur-2xl"
-                      size={200}
-                      springOptions={{
-                        stiffness: 26.7,
-                        damping: 4.1,
-                        mass: 0.2,
-                      }}
-                    />
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-emerald-500/20 rounded-lg">
-                          <IconComponent className="w-5 h-5 text-emerald-400" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg text-slate-100">{service.title}</CardTitle>
-                          <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-400 text-xs">
-                            {service.price}
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <p className="text-slate-300 text-sm">{service.description}</p>
-                      <div className="space-y-1">
-                        {service.features.map((feature, index) => (
-                          <div key={index} className="flex items-center space-x-2 text-xs text-slate-400">
-                            <div className="w-1 h-1 bg-emerald-400 rounded-full" />
-                            <span>{feature}</span>
+                    <Card
+                      className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 hover:bg-slate-800/70 transition-colors cursor-pointer h-full group shadow-xl"
+                      onClick={() => handleServiceSelect(service.title)}
+                    >
+                      <Spotlight
+                        className="z-10 from-emerald-500/20 via-emerald-400/10 to-transparent blur-2xl"
+                        size={200}
+                        springOptions={{
+                          stiffness: 26.7,
+                          damping: 4.1,
+                          mass: 0.2,
+                        }}
+                      />
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-emerald-500/20 rounded-lg">
+                            <IconComponent className="w-5 h-5 text-emerald-400" />
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Tilt>
+                          <div>
+                            <CardTitle className="text-lg text-slate-100">{service.title}</CardTitle>
+                            <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-400 text-xs">
+                              {service.price}
+                            </Badge>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <p className="text-slate-300 text-sm">{service.description}</p>
+                        <div className="space-y-1">
+                          {service.features.map((feature, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-xs text-slate-400">
+                              <div className="w-1 h-1 bg-emerald-400 rounded-full" />
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Tilt>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
 
         {/* Location-Based Services */}
@@ -478,59 +544,66 @@ export default function ServicesPage() {
         </div>
 
         {/* Service Areas */}
-  <Card className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-slate-100 flex items-center space-x-2">
-              <MapPin className="w-5 h-5" />
-              <span>Service Coverage Areas</span>
-              <Badge className="bg-emerald-500/20 text-emerald-400">Based on Latest CSV</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <h4 className="font-semibold text-slate-200">Vadodara Central</h4>
-                <div className="space-y-1 text-sm text-slate-400">
-                  <p>• Akota Circle</p>
-                  <p>• Alkapuri</p>
-                  <p>• Karelibaug</p>
-                  <p>• Mandvi</p>
-                  <p>• Fatehgunj</p>
-                  <p>• Sayajigunj</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Card className="bg-slate-900/70 backdrop-blur-xl border-slate-700/40 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-slate-100 flex items-center space-x-2">
+                <MapPin className="w-5 h-5" />
+                <span>Service Coverage Areas</span>
+                <Badge className="bg-emerald-500/20 text-emerald-400">Based on Latest CSV</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-slate-200">Vadodara Central</h4>
+                  <div className="space-y-1 text-sm text-slate-400">
+                    <p>• Akota Circle</p>
+                    <p>• Alkapuri</p>
+                    <p>• Karelibaug</p>
+                    <p>• Mandvi</p>
+                    <p>• Fatehgunj</p>
+                    <p>• Sayajigunj</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-slate-200">Vadodara Extended</h4>
+                  <div className="space-y-1 text-sm text-slate-400">
+                    <p>• Waghodia Road</p>
+                    <p>• Gotri</p>
+                    <p>• Manjalpur</p>
+                    <p>• Nizampura</p>
+                    <p>• Vasna Road</p>
+                    <p>• Subhanpura</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-slate-200">Emergency Coverage</h4>
+                  <div className="space-y-1 text-sm text-slate-400">
+                    <p>• 24/7 Towing</p>
+                    <p>• Jump Start</p>
+                    <p>• Fuel Delivery</p>
+                    <p>• Lockout Service</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-slate-200">Regular Services</h4>
+                  <div className="space-y-1 text-sm text-slate-400">
+                    <p>• Engine Repair</p>
+                    <p>• AC Service</p>
+                    <p>• Brake Service</p>
+                    <p>• General Service</p>
+                  </div>
                 </div>
               </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold text-slate-200">Vadodara Extended</h4>
-                <div className="space-y-1 text-sm text-slate-400">
-                  <p>• Waghodia Road</p>
-                  <p>• Gotri</p>
-                  <p>• Manjalpur</p>
-                  <p>• Nizampura</p>
-                  <p>• Vasna Road</p>
-                  <p>• Subhanpura</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold text-slate-200">Emergency Coverage</h4>
-                <div className="space-y-1 text-sm text-slate-400">
-                  <p>• 24/7 Towing</p>
-                  <p>• Jump Start</p>
-                  <p>• Fuel Delivery</p>
-                  <p>• Lockout Service</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold text-slate-200">Regular Services</h4>
-                <div className="space-y-1 text-sm text-slate-400">
-                  <p>• Engine Repair</p>
-                  <p>• AC Service</p>
-                  <p>• Brake Service</p>
-                  <p>• General Service</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   )

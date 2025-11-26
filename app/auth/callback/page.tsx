@@ -61,7 +61,7 @@ export default function AuthCallback() {
             setStatus("success")
             setMessage("Password reset successful! You can now update your password.")
             setTimeout(() => {
-              router.push("/auth/update-password")
+              router.push("/auth/reset-password")
             }, 2000)
           }
         } else {

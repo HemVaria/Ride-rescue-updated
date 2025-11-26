@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Wrench, Car, Phone } from 'lucide-react';
+import { Home, Wrench, Car, Phone, Info } from 'lucide-react';
 
 export interface InteractiveMenuItem {
   label: string;
@@ -23,6 +23,7 @@ const labelToIcon = (label: string) => {
   if (key === 'services') return Wrench;
   if (key === 'dashboard') return Car;
   if (key === 'contact') return Phone;
+  if (key === 'about') return Info;
   return Home;
 };
 
@@ -30,20 +31,20 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({ items, accentColor })
   const pathname = usePathname();
 
   const finalItems = useMemo(() => {
-     const isValid = items && Array.isArray(items) && items.length >= 2 && items.length <= 5;
-     if (!isValid) {
-        console.warn("InteractiveMenu: 'items' prop is invalid or missing.", items);
-        return items ?? [];
-     }
-     return items;
+    const isValid = items && Array.isArray(items) && items.length >= 2 && items.length <= 5;
+    if (!isValid) {
+      console.warn("InteractiveMenu: 'items' prop is invalid or missing.", items);
+      return items ?? [];
+    }
+    return items;
   }, [items]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-      if (activeIndex >= (finalItems?.length ?? 0)) {
-          setActiveIndex(0);
-      }
+    if (activeIndex >= (finalItems?.length ?? 0)) {
+      setActiveIndex(0);
+    }
   }, [finalItems, activeIndex]);
 
   const textRefs = useRef<(HTMLElement | null)[]>([]);
@@ -69,13 +70,13 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({ items, accentColor })
   }, [activeIndex, finalItems]);
 
   const navStyle = useMemo(() => {
-      const activeColor = accentColor || defaultAccentColor;
-      return { ['--component-active-color' as any]: activeColor } as React.CSSProperties;
-  }, [accentColor]); 
+    const activeColor = accentColor || defaultAccentColor;
+    return { ['--component-active-color' as any]: activeColor } as React.CSSProperties;
+  }, [accentColor]);
 
   return (
     <nav
-  className="fixed top-[max(0.5rem,env(safe-area-inset-top))] left-1/2 z-50 -translate-x-1/2 flex gap-0 p-2 bg-transparent"
+      className="fixed top-[max(0.5rem,env(safe-area-inset-top))] left-1/2 z-50 -translate-x-1/2 flex gap-0 p-2 bg-transparent"
       role="navigation"
       style={navStyle}
     >
@@ -92,7 +93,7 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({ items, accentColor })
                 ${isActive ? 'text-white' : 'text-slate-300 hover:text-white'}
                 transition-all duration-300 ease-out hover:scale-[1.06] active:scale-[0.98]`}
               ref={(el) => { itemRefs.current[index] = el }}
-              style={{ ['--lineWidth' as any]: '0px' } as React.CSSProperties} 
+              style={{ ['--lineWidth' as any]: '0px' } as React.CSSProperties}
             >
               <div className="menu__icon">
                 <IconComponent className={`icon h-6 w-6 transition-transform duration-300 ${isActive ? '[animation:iconBounce_1s_ease]' : 'group-hover:scale-110'}`} />
@@ -116,4 +117,4 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({ items, accentColor })
   );
 };
 
-export {InteractiveMenu}
+export { InteractiveMenu }
